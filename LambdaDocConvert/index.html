@@ -198,6 +198,103 @@
       </div>
     </div>
 
+    <!-- Third Grid -->
+
+    <div class="w3-row-padding w3-padding-64 w3-container">
+      <div class="w3-content">
+        <div class="w3-twothird">
+          <h1>Lorem Ipsum</h1>
+          <div class="mx-auto pt-2 pb-2">
+            <div class="d-flex justify-content-between">
+              <label>Range</label>
+              <div><input type="text" name="values" value="" disabled /></div>
+            </div>
+            <!--use value=1-->
+            <input
+              type="range"
+              id="blurRange"
+              class="form-range customRange"
+              value="1"
+              min="1"
+              max="10"
+            />
+            <div class="d-flex justify-content-between">
+              <span>1</span>
+              <span>10</span>
+            </div>
+          </div>
+          <button
+            id="blurChangeButton"
+            onclick="handleSubmitBlur()"
+            class="w3-button w3-black w3-padding-large w3-large"
+          >
+            Blur
+          </button>
+          <h5 class="w3-padding-32">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+          </h5>
+
+          <p class="w3-text-grey">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat
+            non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat.
+          </p>
+        </div>
+
+        <div class="w3-third w3-center">
+          <i class="fa fa-anchor w3-padding-64 w3-text-red"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fourth Grid -->
+
+    <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+      <div class="w3-content">
+        <div class="w3-third w3-center">
+          <i class="fa fa-coffee w3-padding-64 w3-text-red w3-margin-right"></i>
+        </div>
+
+        <div class="w3-twothird">
+          <h1>Lorem Ipsum</h1>
+          <button
+            id="grayChangeButton"
+            onclick="handleSubmitGray()"
+            class="w3-button w3-black w3-padding-large w3-large"
+          >
+            Grayscale
+          </button>
+          <h5 class="w3-padding-32">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+          </h5>
+
+          <p class="w3-text-grey">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat
+            non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- First Grid -->
     <div class="w3-row-padding w3-padding-64 w3-container">
       <div class="w3-content">
@@ -286,6 +383,126 @@
       var http = new XMLHttpRequest();
       var url =
         "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1";
+
+      function handleSubmitGray() {
+        var base64String = "";
+        var fileInput = document.getElementById("image");
+        var file = fileInput.files[0];
+        var type = file.type.split("/")[1];
+        if (!type) {
+          alert("Please select a valid type.");
+          return;
+        }
+
+        if (
+          !file ||
+          (file.type !== "image/jpeg" &&
+            file.type !== "image/png" &&
+            file.type !== "image/jpg")
+        ) {
+          alert("Please upload an image of type jpg, jpeg, or png.");
+          return;
+        }
+
+        document.getElementById(
+          "grayChangeButton"
+        ).innerHTML = `<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>`;
+        document.getElementById("grayChangeButton").disabled = true;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          base64String = reader.result.split(",")[1];
+          var data = {
+            image: base64String,
+            type: type,
+          };
+
+          var http = new XMLHttpRequest();
+          var url =
+            "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1/grayscale";
+
+          http.open("POST", url, true);
+          http.setRequestHeader("Content-Type", "application/json");
+          http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+              console.log(http.responseText);
+              document.getElementById("grayChangeButton").innerHTML = "Blur";
+              document.getElementById("grayChangeButton").disabled = false;
+              var responseData = JSON.parse(http.responseText);
+              if (responseData.imageUrl) {
+                downloadImage(responseData.imageUrl);
+              } else {
+                alert("Failed to get image URL.");
+              }
+            }
+          };
+          http.send(JSON.stringify(data));
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function handleSubmitBlur() {
+        var base64String = "";
+        var fileInput = document.getElementById("image");
+        var file = fileInput.files[0];
+        var type = file.type.split("/")[1];
+        var blurValue = document.getElementById("blurRange").value;
+        if (!type) {
+          alert("Please select a valid type.");
+          return;
+        }
+        if (!blurValue) {
+          alert("Please select a valid blur value.");
+          return;
+        }
+
+        if (
+          !file ||
+          (file.type !== "image/jpeg" &&
+            file.type !== "image/png" &&
+            file.type !== "image/jpg")
+        ) {
+          alert("Please upload an image of type jpg, jpeg, or png.");
+          return;
+        }
+
+        document.getElementById(
+          "blurChangeButton"
+        ).innerHTML = `<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>`;
+        document.getElementById("blurChangeButton").disabled = true;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          base64String = reader.result.split(",")[1];
+          var data = {
+            image: base64String,
+            blur: blurValue,
+            type: type,
+          };
+
+          var http = new XMLHttpRequest();
+          var url =
+            "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1/blur";
+
+          http.open("POST", url, true);
+          http.setRequestHeader("Content-Type", "application/json");
+          http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+              console.log(http.responseText);
+              document.getElementById("blurChangeButton").innerHTML = "Blur";
+              document.getElementById("blurChangeButton").disabled = false;
+              var responseData = JSON.parse(http.responseText);
+              if (responseData.imageUrl) {
+                downloadImage(responseData.imageUrl);
+              } else {
+                alert("Failed to get image URL.");
+              }
+            }
+          };
+          http.send(JSON.stringify(data));
+        };
+
+        reader.readAsDataURL(file);
+      }
 
       function handleSubmitNegate() {
         var base64String = "";
@@ -377,7 +594,6 @@
             image: base64String,
             type: type,
           };
-          console.log(data);
 
           var http = new XMLHttpRequest();
           var url =
@@ -431,6 +647,9 @@
           .siblings(".custom-file-label")
           .addClass("selected")
           .html(fileName);
+      });
+      $("#blurRange").on("change input", function () {
+        $("[name=values]").val($(this).val()); //assign value..
       });
     </script>
   </body>
