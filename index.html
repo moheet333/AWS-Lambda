@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+  `
+  <head>
+    <title>LambdaImageConvert</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://res.cloudinary.com/dkf4grinx/image/upload/v1715025192/Lambda%20Image%20Convert/favicon_l3sr2p.gif"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Lato"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <style>
+      body,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Lato", sans-serif;
+      }
+      .w3-bar,
+      h1,
+      button {
+        font-family: "Montserrat", sans-serif;
+      }
+      #snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+        font-size: 17px;
+      }
+
+      #snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+
+      @-webkit-keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
+      }
+
+      @-webkit-keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+
+      @keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+
+      .table-wrap {
+        height: 8rem;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="w3-top">
+      <div class="w3-bar w3-red w3-card w3-left-align w3-large">
+        <a
+          class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red"
+          href="javascript:void(0);"
+          onclick="myFunction()"
+          title="Toggle Navigation Menu"
+          ><i class="fa fa-bars"></i
+        ></a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large w3-white"
+          >Home</a
+        >
+        <a
+          href="#resizeChange"
+          class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+          >Resize</a
+        >
+        <a
+          href="#negateChange"
+          class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+          >Negative</a
+        >
+        <a
+          href="#blurChange"
+          class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+          >Blur</a
+        >
+        <a
+          href="#grayscaleChange"
+          class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+          >Grayscale</a
+        >
+        <a
+          href="#tintChange"
+          class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+          >Tint</a
+        >
+        <a
+          href="#sharpenChange"
+          class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+          >Sharpen</a
+        >
+        <a
+          href="#typeChange"
+          class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white"
+          >Change Type</a
+        >
+      </div>
+
+      <!-- Navbar on small screens -->
+      <div
+        id="navDemo"
+        class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large"
+      >
+        <a href="#resizeChange" class="w3-bar-item w3-button w3-padding-large"
+          >Resize</a
+        >
+        <a href="#negateChange" class="w3-bar-item w3-button w3-padding-large"
+          >Negative</a
+        >
+        <a href="#blurChange" class="w3-bar-item w3-button w3-padding-large"
+          >Blur</a
+        >
+        <a
+          href="#grayscaleChange"
+          class="w3-bar-item w3-button w3-padding-large"
+          >Grayscale</a
+        >
+        <a href="#tintChange" class="w3-bar-item w3-button w3-padding-large"
+          >Tint</a
+        >
+        <a href="#sharpenChange" class="w3-bar-item w3-button w3-padding-large"
+          >Sharpen</a
+        >
+        <a href="#typeChange" class="w3-bar-item w3-button w3-padding-large"
+          >Change Type</a
+        >
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="w3-container w3-red w3-center" style="padding: 128px 16px">
+      <h1 class="w3-margin w3-jumbo">Lambda Image Convert</h1>
+      <p class="w3-xlarge mb-lg-5">Transforming images for your vision</p>
+      <div class="mb-3 w-75" style="margin-left: 12.5%">
+        <label for="image" class="form-label">Please select image</label>
+        <input
+          class="form-control"
+          type="file"
+          id="image"
+          accept="image/jpeg, image/png, image/jpg"
+        />
+      </div>
+      <div
+        class="alert alert-primary w-75"
+        style="margin-left: 12.5%"
+        role="alert"
+      >
+        After selecting an image, please select the operation from the navbar.
+        Your recent history is displayed below
+      </div>
+      <div class="historyTable table-wrap table-responsive-lg">
+        <table
+          class="table table-sm table-success table-striped w-75 mb-0"
+          style="margin-left: 12.5%"
+        >
+          <thead>
+            <tr>
+              <th scope="col">Operation-Image Url</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </header>
+
+    <!-- First Grid -->
+
+    <div class="w3-row-padding w3-padding-64 w3-container" id="resizeChange">
+      <div class="w3-content">
+        <div class="w3-twothird">
+          <h1>Resize Image</h1>
+          <div class="row mb-2">
+            <div class="col">
+              <input
+                type="number"
+                id="width"
+                class="form-control"
+                placeholder="Width in pixels"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="number"
+                id="height"
+                class="form-control"
+                placeholder="Height in pixels"
+              />
+            </div>
+          </div>
+          <img
+            src="https://res.cloudinary.com/dkf4grinx/image/upload/fl_preserve_transparency/v1715025220/Lambda%20Image%20Convert/api-resize-fit_qpiqyz.jpg?_s=public-apps"
+            class="img-fluid mb-2 rounded"
+            alt="resize-fit"
+          />
+          <div class="alert alert-primary" role="alert">
+            Select the fit type for the image, for reference check the image
+            above
+          </div>
+          <select
+            id="fit"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            <option value="cover" selected>cover</option>
+            <option value="contain">contain</option>
+            <option value="fill">fill</option>
+            <option value="inside">inside</option>
+            <option value="outside">outside</option>
+          </select>
+          <br />
+          <button
+            id="resizeChangeButton"
+            onclick="handleSubmitResize()"
+            class="w3-button w3-black w3-padding-large w3-large rounded"
+          >
+            Resize
+          </button>
+        </div>
+
+        <div class="w3-third w3-center">
+          <i
+            class="img-fluid fa fa-crop fa-10x w3-padding-64 w3-text-red"
+            style="font-size: 15rem"
+          ></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second Grid -->
+    <div
+      class="w3-row-padding w3-light-grey w3-padding-64 w3-container"
+      id="negateChange"
+    >
+      <div class="w3-content">
+        <div class="w3-third w3-center">
+          <i
+            class="img-fluid fa-regular fa-10x fa-square-minus w3-text-red"
+            style="font-size: 15rem"
+          ></i>
+        </div>
+
+        <div class="w3-twothird">
+          <h1>Negative Image</h1>
+          <div class="alert alert-info" role="alert">
+            A negative image is a transformed version of a photograph where the
+            colors are inverted. In simpler terms, the bright areas become dark,
+            and the dark areas become bright. This process gives your images a
+            distinct and intriguing appearance, showcasing the hidden beauty
+            within.
+          </div>
+          <button
+            id="negateChangeButton"
+            onclick="handleSubmitNegate()"
+            class="w3-button w3-black w3-padding-large w3-large rounded"
+          >
+            Negate
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Third Grid -->
+
+    <div class="w3-row-padding w3-padding-64 w3-container" id="blurChange">
+      <div class="w3-content">
+        <div class="w3-twothird">
+          <h1>Blur Image</h1>
+          <div class="alert alert-info" role="alert">
+            Blur between 1 to 4 creates a gentle, artistic effect. Going above 7
+            adds a strong blur, best suited for unique artistic styles.
+          </div>
+          <div class="mx-auto pt-2 pb-2">
+            <div class="d-flex justify-content-between">
+              <label>Range</label>
+              <div><input type="text" name="values" value="" disabled /></div>
+            </div>
+            <!--use value=1-->
+            <input
+              type="range"
+              id="blurRange"
+              class="form-range customRange"
+              value="1"
+              min="1"
+              max="10"
+            />
+            <div class="d-flex justify-content-between">
+              <span>1</span>
+              <span>10</span>
+            </div>
+          </div>
+          <button
+            id="blurChangeButton"
+            onclick="handleSubmitBlur()"
+            class="w3-button w3-black w3-padding-large w3-large rounded"
+          >
+            Blur
+          </button>
+        </div>
+
+        <div class="w3-third w3-center">
+          <i
+            class="img-fluid fa-solid fa-smog fa-10x w3-padding-64 w3-text-red"
+            style="font-size: 15rem"
+          ></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fourth Grid -->
+
+    <div
+      class="w3-row-padding w3-light-grey w3-padding-64 w3-container"
+      id="grayscaleChange"
+    >
+      <div class="w3-content">
+        <div class="w3-third w3-center">
+          <i
+            class="img-fluid fa-solid fa-circle-half-stroke fa-10x w3-padding-64 w3-text-red"
+            style="font-size: 15rem"
+          ></i>
+        </div>
+
+        <div class="w3-twothird">
+          <h1>Grayscale Image</h1>
+          <div class="alert alert-info" role="alert">
+            Grayscale transformation removes color from an image, converting it
+            into shades of gray ranging from black to white. This process
+            simplifies the image to focus on contrast, textures, and shapes,
+            creating a timeless and monochromatic aesthetic.
+          </div>
+          <button
+            id="grayChangeButton"
+            onclick="handleSubmitGray()"
+            class="w3-button w3-black w3-padding-large w3-large rounded"
+          >
+            Grayscale
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--Fivth Grid-->
+    <div class="w3-row-padding w3-padding-64 w3-container" id="tintChange">
+      <div class="w3-content">
+        <div class="w3-twothird">
+          <h1>Tint</h1>
+          <div class="alert alert-primary" role="alert">
+            Select a color from the options below to tint your image. Tinting
+            adds a subtle hue of the chosen color to your image, enhancing its
+            mood and giving it a unique artistic touch.
+          </div>
+          <label for="colorPicker" class="form-label"> Select Color </label>
+          <input
+            type="color"
+            class="form-control form-control-color w-25 mb-2"
+            id="colorPicker"
+            onchange="printColor(event)"
+            value="#006600"
+          />
+          <button
+            id="tintChangeButton"
+            onclick="handleSubmitTint()"
+            class="w3-button w3-black w3-padding-large w3-large rounded"
+          >
+            Tint
+          </button>
+        </div>
+
+        <div class="w3-third w3-center">
+          <i
+            class="img-fluid fa-solid fa-droplet fa-10x w3-padding-64 w3-text-red"
+            style="font-size: 15rem"
+          ></i>
+        </div>
+      </div>
+    </div>
+
+    <!--Sixth Grid-->
+    <div
+      class="w3-row-padding w3-light-grey w3-padding-64 w3-container"
+      id="sharpenChange"
+    >
+      <div class="w3-content">
+        <div class="w3-third w3-center">
+          <i
+            class="img-fluid fa-solid fa-marker fa-10x w3-padding-64 w3-text-red"
+            style="font-size: 15rem"
+          ></i>
+        </div>
+
+        <div class="w3-twothird">
+          <h1>Sharpen Image</h1>
+          <div class="alert alert-primary" role="alert">
+            Choose between 'Sharpen' for a quick enhancement or 'Sharpen Pro'
+            for advanced sharpening. Processing time varies based on image
+            complexity, ensuring optimal results for every sharpening option.
+          </div>
+          <button
+            id="sharpenChangeButton"
+            onclick="handleSubmitSharpen(event)"
+            class="w3-button w3-black w3-padding-large w3-large rounded w3-margin-right"
+          >
+            Sharpen
+          </button>
+          <button
+            id="sharpenProChangeButton"
+            onclick="handleSubmitSharpen(event)"
+            class="w3-button w3-black w3-padding-large w3-large rounded"
+          >
+            Sharpen Pro
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--Seventh Grid-->
+    <div class="w3-row-padding w3-padding-64 w3-container" id="typeChange">
+      <div class="w3-content">
+        <div class="w3-twothird">
+          <h1>Change Type</h1>
+          <div class="alert alert-info" role="alert">
+            Select the desired file type for your image: JPG, PNG, or JPEG. Each
+            format offers distinct features and compatibility, allowing you to
+            tailor your image output to your specific needs.
+          </div>
+          <select
+            id="type"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            <option selected>Select type</option>
+            <option value="jpg">jpg</option>
+            <option value="png">png</option>
+            <option value="jpeg">jpeg</option>
+          </select>
+          <br />
+          <button
+            id="typeChangeButton"
+            onclick="handleSubmit()"
+            class="w3-button w3-black w3-padding-large w3-large rounded"
+          >
+            Convert
+          </button>
+        </div>
+
+        <div class="w3-third w3-center">
+          <i
+            class="img-fluid fa-solid fa-bolt fa-10x w3-padding-64 w3-text-red"
+            style="font-size: 15rem"
+          ></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="w3-container w3-black w3-center w3-opacity w3-padding-64">
+      <h1 class="w3-margin w3-xlarge">Quote of the day: live life</h1>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w3-container w3-padding-32 w3-center w3-opacity">
+      <div class="w3-xlarge w3-padding-32">
+        <a href="https://github.com/moheet333" target="_blank">
+          <i class="fa-brands fa-github w3-hover-opacity"></i
+        ></a>
+        <a
+          href="https://www.linkedin.com/in/moheet-shendarkar-636808222/"
+          target="_blank"
+          ><i class="fa-brands fa-linkedin w3-hover-opacity"></i
+        ></a>
+        <a href="https://twitter.com/Moheet333" target="_blank">
+          <i class="fa-brands fa-twitter w3-hover-opacity"></i
+        ></a>
+      </div>
+      <p>
+        Developed by
+        <a href="https://github.com/moheet333" target="_blank"
+          >@Moheet Shendarkar</a
+        >
+      </p>
+    </footer>
+    <div id="snackbar">Some text some message..</div>
+
+    <script>
+      var http = new XMLHttpRequest();
+      var url =
+        "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1";
+
+      function handleSubmitResize() {
+        var base64String = "";
+        var fileInput = document.getElementById("image");
+        var file = fileInput.files[0];
+        var type = file.type.split("/")[1];
+        var width = document.getElementById("width").value;
+        var height = document.getElementById("height").value;
+        var fit = document.getElementById("fit").value;
+        if (
+          !file ||
+          (file.type !== "image/jpeg" &&
+            file.type !== "image/png" &&
+            file.type !== "image/jpg")
+        ) {
+          alert("Please upload an image of type jpg, jpeg, or png.");
+          return;
+        }
+        if (!width || !height || !fit) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please enter valid values for width, height, and fit.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+        if (width < 1 || height < 1) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please enter valid values for width and height.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        document.getElementById(
+          "resizeChangeButton"
+        ).innerHTML = `<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>`;
+        document.getElementById("resizeChangeButton").disabled = true;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          base64String = reader.result.split(",")[1];
+          var data = {
+            image: base64String,
+            type: type,
+            width: Number(width),
+            height: Number(height),
+            fit: fit,
+          };
+
+          var http = new XMLHttpRequest();
+          var url =
+            "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1/resize";
+
+          http.open("POST", url, true);
+          http.setRequestHeader("Content-Type", "application/json");
+          http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+              console.log(http.responseText);
+              document.getElementById("resizeChangeButton").innerHTML =
+                "Resize";
+              document.getElementById("resizeChangeButton").disabled = false;
+              var responseData = JSON.parse(http.responseText);
+              setCookie(responseData.key, {
+                imageUrl: responseData.imageUrl,
+                operation: responseData.operation,
+              });
+              if (responseData.imageUrl) {
+                downloadImage(responseData.imageUrl);
+              } else {
+                var x = document.getElementById("snackbar");
+                document.getElementById("snackbar").innerHTML =
+                  "Failed to get image URL.";
+                x.className = "show";
+                setTimeout(function () {
+                  x.className = x.className.replace("show", "");
+                }, 3000);
+              }
+            }
+          };
+          http.send(JSON.stringify(data));
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function handleSubmitSharpen(ev) {
+        var pro = ev.target.id === "sharpenProChangeButton" ? true : false;
+        var base64String = "";
+        var fileInput = document.getElementById("image");
+        var file = fileInput.files[0];
+        var type = file.type.split("/")[1];
+
+        if (
+          !file ||
+          (file.type !== "image/jpeg" &&
+            file.type !== "image/png" &&
+            file.type !== "image/jpg")
+        ) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please upload an image of type jpg, jpeg, or png.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        document.getElementById(
+          pro ? "sharpenProChangeButton" : "sharpenChangeButton"
+        ).innerHTML = `<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>`;
+        document.getElementById(
+          pro ? "sharpenProChangeButton" : "sharpenChangeButton"
+        ).disabled = true;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          base64String = reader.result.split(",")[1];
+          var data = {
+            image: base64String,
+            type: type,
+            pro: pro,
+          };
+
+          var http = new XMLHttpRequest();
+          var url =
+            "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1/sharpen";
+
+          http.open("POST", url, true);
+          http.setRequestHeader("Content-Type", "application/json");
+          http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+              console.log(http.responseText);
+              document.getElementById(
+                pro ? "sharpenProChangeButton" : "sharpenChangeButton"
+              ).innerHTML = pro ? "Sharpen Pro" : "Sharpen";
+              document.getElementById(
+                pro ? "sharpenProChangeButton" : "sharpenChangeButton"
+              ).disabled = false;
+              var responseData = JSON.parse(http.responseText);
+              setCookie(responseData.key, {
+                imageUrl: responseData.imageUrl,
+                operation: responseData.operation,
+              });
+              if (responseData.imageUrl) {
+                downloadImage(responseData.imageUrl);
+              } else {
+                var x = document.getElementById("snackbar");
+                document.getElementById("snackbar").innerHTML =
+                  "Failed to get image URL.";
+                x.className = "show";
+                setTimeout(function () {
+                  x.className = x.className.replace("show", "");
+                }, 3000);
+              }
+            }
+          };
+          http.send(JSON.stringify(data));
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function handleSubmitTint() {
+        var base64String = "";
+        var color = changeToCode(document.getElementById("colorPicker").value);
+        var fileInput = document.getElementById("image");
+        var file = fileInput.files[0];
+        var type = file.type.split("/")[1];
+        if (!color) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please select a valid color.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        if (
+          !file ||
+          (file.type !== "image/jpeg" &&
+            file.type !== "image/png" &&
+            file.type !== "image/jpg")
+        ) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please upload an image of type jpg, jpeg, or png.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        document.getElementById(
+          "tintChangeButton"
+        ).innerHTML = `<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>`;
+        document.getElementById("tintChangeButton").disabled = true;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          base64String = reader.result.split(",")[1];
+          var data = {
+            image: base64String,
+            type: type,
+            color: color,
+          };
+          var http = new XMLHttpRequest();
+          var url =
+            "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1/tint";
+
+          http.open("POST", url, true);
+          http.setRequestHeader("Content-Type", "application/json");
+          http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+              console.log(http.responseText);
+              document.getElementById("tintChangeButton").innerHTML = "Tint";
+              document.getElementById("tintChangeButton").disabled = false;
+              var responseData = JSON.parse(http.responseText);
+              setCookie(responseData.key, {
+                imageUrl: responseData.imageUrl,
+                operation: responseData.operation,
+              });
+              if (responseData.imageUrl) {
+                downloadImage(responseData.imageUrl);
+              } else {
+                var x = document.getElementById("snackbar");
+                document.getElementById("snackbar").innerHTML =
+                  "Failed to get image URL.";
+                x.className = "show";
+                setTimeout(function () {
+                  x.className = x.className.replace("show", "");
+                }, 3000);
+              }
+            }
+          };
+          http.send(JSON.stringify(data));
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function handleSubmitGray() {
+        var base64String = "";
+        var fileInput = document.getElementById("image");
+        var file = fileInput.files[0];
+        var type = file.type.split("/")[1];
+        if (!type) {
+          alert("Please select a valid type.");
+          return;
+        }
+
+        if (
+          !file ||
+          (file.type !== "image/jpeg" &&
+            file.type !== "image/png" &&
+            file.type !== "image/jpg")
+        ) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please upload an image of type jpg, jpeg, or png.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        document.getElementById(
+          "grayChangeButton"
+        ).innerHTML = `<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>`;
+        document.getElementById("grayChangeButton").disabled = true;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          base64String = reader.result.split(",")[1];
+          var data = {
+            image: base64String,
+            type: type,
+          };
+
+          var http = new XMLHttpRequest();
+          var url =
+            "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1/grayscale";
+
+          http.open("POST", url, true);
+          http.setRequestHeader("Content-Type", "application/json");
+          http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+              console.log(http.responseText);
+              document.getElementById("grayChangeButton").innerHTML =
+                "Grayscale";
+              document.getElementById("grayChangeButton").disabled = false;
+              var responseData = JSON.parse(http.responseText);
+              setCookie(responseData.key, {
+                imageUrl: responseData.imageUrl,
+                operation: responseData.operation,
+              });
+              if (responseData.imageUrl) {
+                downloadImage(responseData.imageUrl);
+              } else {
+                var x = document.getElementById("snackbar");
+                document.getElementById("snackbar").innerHTML =
+                  "Failed to get image URL.";
+                x.className = "show";
+                setTimeout(function () {
+                  x.className = x.className.replace("show", "");
+                }, 3000);
+              }
+            }
+          };
+          http.send(JSON.stringify(data));
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function handleSubmitBlur() {
+        var base64String = "";
+        var fileInput = document.getElementById("image");
+        var file = fileInput.files[0];
+        var type = file.type.split("/")[1];
+        var blurValue = document.getElementById("blurRange").value;
+
+        if (!blurValue) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please enter a valid blur value.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        if (
+          !file ||
+          (file.type !== "image/jpeg" &&
+            file.type !== "image/png" &&
+            file.type !== "image/jpg")
+        ) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please upload an image of type jpg, jpeg, or png.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        document.getElementById(
+          "blurChangeButton"
+        ).innerHTML = `<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>`;
+        document.getElementById("blurChangeButton").disabled = true;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          base64String = reader.result.split(",")[1];
+          var data = {
+            image: base64String,
+            blur: blurValue,
+            type: type,
+          };
+
+          var http = new XMLHttpRequest();
+          var url =
+            "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1/blur";
+
+          http.open("POST", url, true);
+          http.setRequestHeader("Content-Type", "application/json");
+          http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+              console.log(http.responseText);
+              document.getElementById("blurChangeButton").innerHTML = "Blur";
+              document.getElementById("blurChangeButton").disabled = false;
+              var responseData = JSON.parse(http.responseText);
+              setCookie(responseData.key, {
+                imageUrl: responseData.imageUrl,
+                operation: responseData.operation,
+              });
+              if (responseData.imageUrl) {
+                downloadImage(responseData.imageUrl);
+              } else {
+                var x = document.getElementById("snackbar");
+                document.getElementById("snackbar").innerHTML =
+                  "Failed to get image URL.";
+                x.className = "show";
+                setTimeout(function () {
+                  x.className = x.className.replace("show", "");
+                }, 3000);
+              }
+            }
+          };
+          http.send(JSON.stringify(data));
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function handleSubmitNegate() {
+        var base64String = "";
+        var fileInput = document.getElementById("image");
+        var file = fileInput.files[0];
+        var type = file.type.split("/")[1];
+
+        if (
+          !file ||
+          (file.type !== "image/jpeg" &&
+            file.type !== "image/png" &&
+            file.type !== "image/jpg")
+        ) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please upload an image of type jpg, jpeg, or png.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        document.getElementById(
+          "negateChangeButton"
+        ).innerHTML = `<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>`;
+        document.getElementById("negateChangeButton").disabled = true;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          base64String = reader.result.split(",")[1];
+          var data = {
+            image: base64String,
+            type: type,
+          };
+
+          var http = new XMLHttpRequest();
+          var url =
+            "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1/negate";
+
+          http.open("POST", url, true);
+          http.setRequestHeader("Content-Type", "application/json");
+          http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+              console.log(http.responseText);
+              document.getElementById("negateChangeButton").innerHTML =
+                "Negate";
+              document.getElementById("negateChangeButton").disabled = false;
+              var responseData = JSON.parse(http.responseText);
+              setCookie(responseData.key, {
+                imageUrl: responseData.imageUrl,
+                operation: responseData.operation,
+              });
+              if (responseData.imageUrl) {
+                downloadImage(responseData.imageUrl);
+              } else {
+                var x = document.getElementById("snackbar");
+                document.getElementById("snackbar").innerHTML =
+                  "Failed to get image URL.";
+                x.className = "show";
+                setTimeout(function () {
+                  x.className = x.className.replace("show", "");
+                }, 3000);
+              }
+            }
+          };
+          http.send(JSON.stringify(data));
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function handleSubmit() {
+        var base64String = "";
+        var type = document.getElementById("type").value;
+        var fileInput = document.getElementById("image");
+        var file = fileInput.files[0];
+
+        if (!type || type === "Select type") {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please select a valid type.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        if (
+          !file ||
+          (file.type !== "image/jpeg" &&
+            file.type !== "image/png" &&
+            file.type !== "image/jpg")
+        ) {
+          var x = document.getElementById("snackbar");
+          document.getElementById("snackbar").innerHTML =
+            "Please upload an image of type jpg, jpeg, or png.";
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+          return;
+        }
+
+        document.getElementById(
+          "typeChangeButton"
+        ).innerHTML = `<div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>`;
+        document.getElementById("typeChangeButton").disabled = true;
+
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          base64String = reader.result.split(",")[1];
+          var data = {
+            image: base64String,
+            type: type,
+          };
+
+          var http = new XMLHttpRequest();
+          var url =
+            "https://hlqxnk332b.execute-api.ap-south-1.amazonaws.com/beta/api/v1/convert";
+
+          http.open("POST", url, true);
+          http.setRequestHeader("Content-Type", "application/json");
+          http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+              console.log(http.responseText);
+              document.getElementById("type").value = "Select type";
+              document.getElementById("typeChangeButton").innerHTML = "Convert";
+              document.getElementById("typeChangeButton").disabled = false;
+              var responseData = JSON.parse(http.responseText);
+              setCookie(responseData.key, {
+                imageUrl: responseData.imageUrl,
+                operation: responseData.operation,
+              });
+              if (responseData.imageUrl) {
+                downloadImage(responseData.imageUrl);
+              } else {
+                var x = document.getElementById("snackbar");
+                document.getElementById("snackbar").innerHTML =
+                  "Failed to get image URL.";
+                x.className = "show";
+                setTimeout(function () {
+                  x.className = x.className.replace("show", "");
+                }, 3000);
+              }
+            }
+          };
+          http.send(JSON.stringify(data));
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      // download anchor tag
+      function downloadImage(url) {
+        var a = document.createElement("a");
+        a.href = url;
+        var imageName = String(url).split("/").pop();
+        a.download = imageName; // You can change the downloaded file name here
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      function changeToCode(hex) {
+        const r = parseInt(hex.substr(1, 2), 16);
+        const g = parseInt(hex.substr(3, 2), 16);
+        const b = parseInt(hex.substr(5, 2), 16);
+        return { r, g, b };
+      }
+
+      // Used to toggle the menu on small screens when clicking on the menu button
+      function myFunction() {
+        var x = document.getElementById("navDemo");
+        if (x.className.indexOf("w3-show") == -1) {
+          x.className += " w3-show";
+        } else {
+          x.className = x.className.replace(" w3-show", "");
+        }
+      }
+      $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this)
+          .siblings(".custom-file-label")
+          .addClass("selected")
+          .html(fileName);
+      });
+      $("#blurRange").on("change input", function () {
+        $("[name=values]").val($(this).val()); //assign value..
+      });
+      function setCookie(cname, cvalue) {
+        const d = new Date();
+        d.setTime(d.getTime() + 2 * 24 * 60 * 60 * 1000);
+        let expires = "expires=" + d.toUTCString();
+        document.cookie =
+          String(cname) +
+          "=" +
+          JSON.stringify(cvalue) +
+          ";" +
+          expires +
+          ";path=/";
+      }
+      if (document.cookie) {
+        var x = document.cookie.split(";");
+        var cookies = [];
+        x.forEach((cookie) => {
+          cookies.push(JSON.parse(cookie.split("=")[1]));
+        });
+        var tableBody = document.querySelector(".historyTable table tbody");
+
+        tableBody.innerHTML = "";
+
+        cookies.forEach((cookie) => {
+          var row = document.createElement("tr");
+
+          // Create single cell for operation and clickable link of image url
+          var operationImageUrlCell = document.createElement("td");
+          var operationLink = document.createElement("a");
+          operationLink.textContent = cookie.operation + " - View Image";
+          operationLink.href = cookie.imageUrl;
+          operationLink.target = "_blank"; // Open in new tab
+          operationImageUrlCell.appendChild(operationLink);
+
+          // Append cell to row
+          row.appendChild(operationImageUrlCell);
+
+          // Append row to table body
+          tableBody.appendChild(row);
+        });
+      }
+    </script>
+  </body>
+</html>
